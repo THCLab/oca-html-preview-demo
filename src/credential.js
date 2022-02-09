@@ -1,5 +1,7 @@
 import { resolveFromZip, OcaJs } from 'oca.js-form-core'
 import { renderOCACredential } from 'oca.js-form-html'
+import { mrBeanBase64 } from './assets/mrBeanBase64'
+import { signatureBase64 } from './assets/signatureBase64'
 
 const ocaJs = new OcaJs({})
 const app = document.querySelector('#app')
@@ -40,5 +42,23 @@ const dataRepo = {
     weight: '125',
     documentDiscriminator: '09/30/201060221/21FD/18',
     issueDate: '09/06/2010'
+  },
+  EPMaG1h2hVxKCZ5_3KoNNwgAyd4Eq8zrxK3xgaaRsz2M: {
+    documentType: 'PA',
+    issuingStateCode: 'che',
+    documentNumber: 'c0000000',
+    primaryIdentifier: 'John',
+    secondaryIdentifier: 'Citizen',
+    nationality: 'CHE',
+    dateOfBirth: '28.01.0000',
+    personalNumber: '',
+    sex: 'M',
+    placeOfBirth: 'Luzern LU',
+    optionalPersonalData: '170',
+    dateOfIssue: '12.07.0000',
+    issuedBy: 'Luzern LU',
+    dateOfExpiry: '11.07.0000',
+    photoImage: mrBeanBase64,
+    signatureImage: signatureBase64
   }
 }

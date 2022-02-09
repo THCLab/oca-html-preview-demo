@@ -3,10 +3,13 @@ const path = require('path');
 
 module.exports = {
   mode: "development",
-  entry: "./src/index.js",
+  entry: {
+   "credential": "./src/credential.js",
+   "form": "./src/form.js"
+  },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "index.js",
+    filename: "[name].js",
     library: {
       type: "commonjs"
     }
@@ -21,7 +24,9 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
-        { from: "src/index.html" }
+        { from: "src/index.html" },
+        { from: "src/views/credential.html" },
+        { from: "src/views/form.html" }
       ]
     })
   ]
