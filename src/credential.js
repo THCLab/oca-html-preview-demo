@@ -3,7 +3,7 @@ import { renderOCACredential } from 'oca.js-form-html'
 import { mrBeanBase64 } from './assets/mrBeanBase64'
 import { signatureBase64 } from './assets/signatureBase64'
 
-const ocaJs = new OcaJs({})
+const ocaJs = new OcaJs({ dataVaults: ['https://data-vault.argo.colossi.network/api/v2/files']})
 const app = document.querySelector('#app')
 
 const fileChooser = document.querySelector('#file-input')
