@@ -28,7 +28,7 @@ OCA.zip
 
 ## Samples
 
-- [Swiss Passport](https://data-vault.argo.colossi.network/api/v1/files/zQmZWyZL42ENEacy6Vf1v81quKhWUFxzVpXyEok6rh4NUQm)
+- [Swiss Passport](https://data-vault.argo.colossi.network/api/v1/files/zQmXqk6Wyh2ki7YwXkqYk2vKtU4aiWY7whDraGJVVUep2tA)
 - [Driving License (California)](https://data-vault.argo.colossi.network/api/v1/files/zQmUEHF1zm5XXhn9dvSk2NRevKPsHVcnpCYx2C3DuM5F4ui)
 - [Driving License (Arizona)](https://data-vault.argo.colossi.network/api/v1/files/zQmPfNmyFTon99HQv2ic79PRSL8i113JfLLYCXGyR8r3qe4)
 

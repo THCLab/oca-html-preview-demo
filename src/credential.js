@@ -1,6 +1,6 @@
 import { resolveFromZip, OcaJs } from 'oca.js-form-core'
 import { renderOCACredential } from 'oca.js-form-html'
-import { mrBeanBase64 } from './assets/mrBeanBase64'
+import { photoBase64 } from './assets/photoBase64'
 import { signatureBase64 } from './assets/signatureBase64'
 
 const ocaJs = new OcaJs({ dataVaults: ['https://data-vault.argo.colossi.network/api/v2/files']})
@@ -45,6 +45,7 @@ const dataRepo = {
   },
   EPMaG1h2hVxKCZ5_3KoNNwgAyd4Eq8zrxK3xgaaRsz2M: {
     documentType: 'PA',
+    issuingState: 'CHE',
     issuingStateCode: 'che',
     documentNumber: 'c0000000',
     primaryIdentifier: 'John',
@@ -58,7 +59,7 @@ const dataRepo = {
     dateOfIssue: '12.07.0000',
     issuedBy: 'Luzern LU',
     dateOfExpiry: '11.07.0000',
-    photoImage: mrBeanBase64,
+    photoImage: photoBase64,
     signatureImage: signatureBase64
   }
 }
