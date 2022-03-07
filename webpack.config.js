@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
   mode: "development",
   entry: {
+   "acdc": "./src/acdc.js",
    "credential": "./src/credential.js",
    "form": "./src/form.js"
   },
@@ -25,6 +26,7 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         { from: "src/index.html" },
+        { from: "src/views/acdc.html" },
         { from: "src/views/credential.html" },
         { from: "src/views/form.html" }
       ]
