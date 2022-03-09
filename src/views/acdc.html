@@ -4,15 +4,85 @@
       #app {
         display: inline-block;
       }
+      .container {
+        display: grid;
+        gap: 10px;
+      }
+      .item1 {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .item2 {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      .item3 {
+        grid-column: 1;
+        grid-row: 3;
+      }
+
+      #not-verified-sign {
+        transform: translate(50%, 50%);
+        position: relative;
+        opacity: 0.3;
+      }
+
+      .sign {
+        display: none;
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      textarea {
+        max-width: 100%;
+        width: 100%;
+      }
+      #render-button {
+        margin-bottom: 10px;
+      }
+      #tda-url-input {
+        width: 100%;
+      }
+
+      @media (min-width: 768px) {
+        .item1 {
+          grid-column: 1;
+          grid-row: 1;
+        }
+        .item2 {
+          grid-column: 2;
+          grid-row: 1;
+        }
+        .item3 {
+          grid-column: 1 / span 2;
+          grid-row: 2;
+        }
+
+        #tda-url-input {
+          width: 50%;
+        }
+      }
     </style>
   </head>
   <body>
-    <label for="acdc-input">Attestation:</label><br>
-    <textarea id="acdc-input" name="acdc-input" rows="10" cols="100"></textarea><br>
-    <button id="render-button">Render credential</button>
+    <div class="container">
+      <div class="item1">
+        <label for="acdc-input">Attestation:</label><br>
+        <textarea id="acdc-input" name="acdc-input" rows="10"></textarea>
+      </div>
 
-    <br><br>
-    <div id="app"></div>
+      <div class="item2">
+        <label for="tda-url-input">TDA URL:</label><br>
+        <input id="tda-url-input" name="tda-url-input" value="http://0.0.0.0:13434" />
+      </div>
+
+      <div class="item3">
+        <button id="render-button">Render credential</button><br>
+        <div id="app"></div>
+        <img src="public/not-verified.png" class="sign" id="not-verified-sign" />
+        <img src="public/verified.png" class="sign" id="verified-sign" />
+      </div>
+    </div>
     <script src="./acdc.js"></script>
   </body>
 </html>

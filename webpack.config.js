@@ -28,7 +28,8 @@ module.exports = {
         { from: "src/index.html" },
         { from: "src/views/acdc.html" },
         { from: "src/views/credential.html" },
-        { from: "src/views/form.html" }
+        { from: "src/views/form.html" },
+        { from: "public/*" }
       ]
     })
   ]
