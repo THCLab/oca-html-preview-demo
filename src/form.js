@@ -9,9 +9,13 @@ fileChooser.onchange = async e => {
   const file = e.target.files[0]
   const oca = await resolveFromZip(file)
   const structure = await ocaJs.createStructure(oca)
-  console.log(structure)
-  const form = renderOCAForm(structure)
-  console.log(form)
+  const onSubmitHandler = (capturedData) => {
+    console.log(capturedData)
+  }
+  const form = renderOCAForm(structure, {}, {
+    showPii: true,
+    defaultLanguage: 'en',
+    onSubmitHandler
+  })
   app.innerHTML = form
-  app.style.cssText = "border: solid 1px; padding: 5px;"
 }

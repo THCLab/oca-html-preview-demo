@@ -1758,15 +1758,6 @@ object.pick@^1.3.0:
   dependencies:
     isobject "^3.0.1"
 
-oca.js-form-core@^0.0.16:
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/oca.js-form-core/-/oca.js-form-core-0.0.16.tgz#74d2d74b2457512cdd0a82d427585ec7a5d7cc05"
-  integrity sha512-MNVLas4ZHBUD4Y92g1a71/6Bx0a2Wuf5wAT7gez30UD2Kk7aHiNa6TacstcTKiQCVrRcCtxCvjp1zWaBjygQ9A==
-  dependencies:
-    axios "^0.24.0"
-    jszip "^3.7.1"
-    oca.js "0.1.27"
-
 oca.js-form-core@^0.0.17:
   version "0.0.17"
   resolved "https://registry.yarnpkg.com/oca.js-form-core/-/oca.js-form-core-0.0.17.tgz#3cc849e4e6cb54711bd9a6115756c3055ef3c0bb"
@@ -1776,15 +1767,15 @@ oca.js-form-core@^0.0.17:
     jszip "^3.7.1"
     oca.js "0.1.27"
 
-oca.js-form-html@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/oca.js-form-html/-/oca.js-form-html-0.0.7.tgz#91426f322d01431f720e76a56d75588bf02fd2e9"
-  integrity sha512-DiDdT96OtqrQpHNg57EhBlzEAwxbjCEkK9gibry2xDU0kFMxGQZZ9l1uQshMHtNE+O5259pvEDe98YGHez0CHg==
+oca.js-form-html@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/oca.js-form-html/-/oca.js-form-html-0.0.8.tgz#7cbec8183cd76aa9611ca27ad43ed12afaffb611"
+  integrity sha512-iKelCyZyZlBbdKSJeJ5c1SrhXVuSdkdzvTFR17+RbQMqU6yQ6yr1oDgfJkSkvOXwoxeuGUITDV8W4v6rkN8MGw==
   dependencies:
     "@types/jsdom" "^16.2.14"
     js-yaml "^4.1.0"
     jsdom "^19.0.0"
-    oca.js-form-core "^0.0.16"
+    oca.js-form-core "^0.0.17"
 
 oca.js@0.1.27:
   version "0.1.27"
