@@ -37,7 +37,7 @@ renderButton.onclick = async _ => {
   } else {
     const acdc = await attestationResponse.json()
 
-    const oca = await (await fetch(`https://repository.oca.argo.colossi.network/api/v4/schemas/${acdc.s}`)).json()
+    const oca = await (await fetch(`https://repository.oca.argo.colossi.network/api/v0.1/namespaces/acdc/schemas/${acdc.s}`)).json()
 
     let capturedData = {}
     if (typeof acdc.a === 'string') {
