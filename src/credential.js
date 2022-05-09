@@ -8,16 +8,40 @@ const app = document.querySelector('#app')
 
 const fileChooser = document.querySelector('#file-input')
 fileChooser.onchange = async e => {
-  const file = e.target.files[0]
-  const oca = await resolveFromZip(file)
+  let ocaBundleFile = e.target.files[0]
+  const files = []
+  for (let i = 0; i < e.target.files.length; i++) {
+    const file = e.target.files[i]
+    if (file.type === 'application/zip') {
+      ocaBundleFile = file
+    } else {
+      files.push(file)
+    }
+  }
+  const additionalOverlays = (await Promise.all(files.map(f => readFile(f)))).map(o => JSON.parse(o))
+
+  const oca = await resolveFromZip(ocaBundleFile)
   const captureBaseSAI = oca.overlays[0].capture_base
   const structure = await ocaJs.createStructure(oca)
-  const credential = renderOCACredential(structure, dataRepo[captureBaseSAI], {
-    dataVaultUrl: 'https://data-vault.argo.colossi.network/api/v1/files'
+  const credential = await renderOCACredential(structure, dataRepo[captureBaseSAI], {
+    dataVaultUrl: 'https://data-vault.argo.colossi.network/api/v1/files',
+    ocaRepoHostUrl: 'https://repository.oca.argo.colossi.network',
+    additionalOverlays
   })
   app.innerHTML = credential.node
   app.style.width = credential.config.width
   app.style.height = parseInt(credential.config.height, 10) / credential.pageNumber + 38
+}
+
+const readFile = (file) => {
+  return new Promise((resolve, reject) => {
+    var fr = new FileReader()
+    fr.onload = () => {
+      resolve(fr.result)
+    }
+    fr.onerror = reject
+    fr.readAsText(file)
+  })
 }
 
 const dataRepo = {
@@ -43,6 +67,32 @@ const dataRepo = {
     documentDiscriminator: '09/30/201060221/21FD/18',
     issueDate: '09/06/2010'
   },
+  'ERY1EB9L3dDyLW-b0cwmQrkS-hBebmjKu2ylU75iYq8c': {
+    dateOfBirth: "",
+    dateOfExpiry: "",
+    dateOfIssue: [
+        "2022-04-30",
+        "2022-05-30"
+    ],
+    documentNumber: "",
+    documentType: "",
+    fullName: "",
+    issuedBy: "",
+    issuingState: "AZE",
+    height: '180',
+    issuingStateCode: [],
+    nationality: "",
+    optionalData: "",
+    optionalDocumentData: "",
+    optionalPersonalData: "180",
+    personalNumber: "",
+    photoImage: "",
+    placeOfBirth: "",
+    primaryIdentifier: "",
+    secondaryIdentifier: "",
+    sex: "unknown",
+    signatureImage: ""
+  },
   EPMaG1h2hVxKCZ5_3KoNNwgAyd4Eq8zrxK3xgaaRsz2M: {
     documentType: 'PA',
     issuingState: 'CHE',
@@ -56,7 +106,7 @@ const dataRepo = {
     sex: 'M',
     placeOfBirth: 'Luzern LU',
     optionalPersonalData: '170',
-    dateOfIssue: '12.07.0000',
+    dateOfIssue: '11.07.0000',
     issuedBy: 'Luzern LU',
     dateOfExpiry: '11.07.0000',
     photoImage: photoBase64,

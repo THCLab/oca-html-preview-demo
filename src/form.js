@@ -6,16 +6,41 @@ const app = document.querySelector('#app')
 
 const fileChooser = document.querySelector('#file-input')
 fileChooser.onchange = async e => {
-  const file = e.target.files[0]
-  const oca = await resolveFromZip(file)
+  let ocaBundleFile = e.target.files[0]
+  const files = []
+  for (let i = 0; i < e.target.files.length; i++) {
+    const file = e.target.files[i]
+    if (file.type === 'application/zip') {
+      ocaBundleFile = file
+    } else {
+      files.push(file)
+    }
+  }
+  const additionalOverlays = (await Promise.all(files.map(f => readFile(f)))).map(o => JSON.parse(o))
+  const oca = await resolveFromZip(ocaBundleFile)
+
   const structure = await ocaJs.createStructure(oca)
   const onSubmitHandler = (capturedData) => {
     console.log(capturedData)
   }
-  const form = renderOCAForm(structure, {}, {
+  const data = {}
+  const form = await renderOCAForm(structure, data, {
     showPii: true,
     defaultLanguage: 'en',
-    onSubmitHandler
+    onSubmitHandler,
+    ocaRepoHostUrl: 'https://repository.oca.argo.colossi.network',
+    additionalOverlays
   })
   app.innerHTML = form
+}
+
+const readFile = (file) => {
+  return new Promise((resolve, reject) => {
+    var fr = new FileReader()
+    fr.onload = () => {
+      resolve(fr.result)
+    }
+    fr.onerror = reject
+    fr.readAsText(file)
+  })
 }
