@@ -2,7 +2,7 @@
 
 see [demo](https://demo.oca.argo.colossi.network/)
 
-## OCA (Overlay Capture Architecture)
+## OCA (Overlays Capture Architecture)
 
 OCA may be represented in two formats: JSON or ZIP file.
 
