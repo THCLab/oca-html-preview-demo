@@ -3,7 +3,10 @@ import { renderOCACredential } from 'oca.js-form-html'
 import { photoBase64 } from './assets/photoBase64'
 import { signatureBase64 } from './assets/signatureBase64'
 
-const ocaJs = new OcaJs({ dataVaults: ['https://data-vault.argo.colossi.network/api/v2/files']})
+const ocaJs = new OcaJs({
+  dataVaults: ['https://data-vault.argo.colossi.network/api/v2/files'],
+  ocaRepositories: ['https://repository.oca.argo.colossi.network/api/v0.1/schemas']
+})
 const app = document.querySelector('#app')
 
 const fileChooser = document.querySelector('#file-input')
@@ -21,16 +24,18 @@ fileChooser.onchange = async e => {
   const additionalOverlays = (await Promise.all(files.map(f => readFile(f)))).map(o => JSON.parse(o))
 
   const oca = await resolveFromZip(ocaBundleFile)
-  const captureBaseSAI = oca.overlays[0].capture_base
   const structure = await ocaJs.createStructure(oca)
+  const captureBaseSAI = structure.captureBaseSAI
   const credential = await renderOCACredential(structure, dataRepo[captureBaseSAI], {
+    defaultLanguage: 'en',
     dataVaultUrl: 'https://data-vault.argo.colossi.network/api/v1/files',
     ocaRepoHostUrl: 'https://repository.oca.argo.colossi.network',
     additionalOverlays
   })
   app.innerHTML = credential.node
-  app.style.width = credential.config.width
-  app.style.height = parseInt(credential.config.height, 10) / credential.pageNumber + 38
+  app.style.width = `min(${credential.config.width}, 100%)`
+  app.style['min-width'] = credential.config.width / 2
+  app.style.height = credential.config.height
 }
 
 const readFile = (file) => {

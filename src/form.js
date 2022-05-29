@@ -1,7 +1,10 @@
 import { resolveFromZip, OcaJs } from 'oca.js-form-core'
 import { renderOCAForm } from 'oca.js-form-html'
 
-const ocaJs = new OcaJs({ dataVaults: ['https://data-vault.argo.colossi.network/api/v2/files']})
+const ocaJs = new OcaJs({
+  dataVaults: ['https://data-vault.argo.colossi.network/api/v2/files'],
+  ocaRepositories: ['https://repository.oca.argo.colossi.network/api/v0.1/schemas']
+})
 const app = document.querySelector('#app')
 
 const fileChooser = document.querySelector('#file-input')

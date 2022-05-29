@@ -1,6 +1,6 @@
 {
   "name": "oca_js-form-html-demo",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
@@ -8,8 +8,8 @@
     "build": "webpack --config webpack.config.js"
   },
   "dependencies": {
-    "oca.js-form-core": "^0.0.21",
-    "oca.js-form-html": "^0.0.14"
+    "oca.js-form-core": "^0.0.22",
+    "oca.js-form-html": "^0.0.15"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^10.2.0",
