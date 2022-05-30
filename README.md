@@ -11,20 +11,24 @@ OCA may be represented in two formats: JSON or ZIP file.
 ```js
 {
   capture_base: { ... },
-  overlays: [ { ... }, { ... }, ... ]
+  overlays: [ { ... }, { ... }, ... ],
+  references?: { ... }
 }
 ```
 
 - ZIP
 OCA zip is a set of JSON files. Structure of such zip is:
+
 ```
 OCA.zip
-├── [Capture Base SAI]
-│    ├── [Overlay 1 SAI].json
-│    ├── [Overlay 2 SAI].json
-│    └── ...
-└── [Capture Base SAI].json (Capture Base)
+├── meta.json
+├── [Capture Base SAI].json
+├── [Overlay 1 SAI].json
+├── [Overlay 2 SAI].json
+└── ...
 ```
+
+where `meta.json` is human readable file indexing type of file's conent to it's SAI
 
 ## Samples
 
@@ -36,7 +40,8 @@ OCA.zip
 
 ### [oca.js-form-core](https://github.com/THCLab/oca.js-form-core)
 
-It's a package for parsing OCA JSON to more friendly JSON format for forms (named Strucutre):  
+It's a package for parsing OCA JSON to more friendly JSON format for forms
+(named Strucutre):  
 `createStructure: (oca: OCA) => Promise<Structure>`  
 Additionaly, it allows to parse OCA zip to OCA JSON:  
 `resolveFromZip: (file: File) => Promise<OCA>`
@@ -44,25 +49,44 @@ Additionaly, it allows to parse OCA zip to OCA JSON:
 ### [oca.js-form-html](https://github.com/THCLab/oca.js-form-html)
 
 Renders HTML element of Form or Credential.  
-`renderOCAForm: (structure: Structure) => string`
+
+```js
+renderOCAForm: (
+    structure: Structure
+    data: { [key: string]: string },
+    config: {
+      showPii?: boolean
+      defaultLanguage?: string
+      onSubmitHandler?: (capturedData: { [key: string]: string }) => void
+      ocaRepoHostUrl?: string
+      additionalOverlays?: Overlay[]
+    }
+  ) => Promise<string>
 ```
+
+```js
 renderOCACredential: (
     structure: Structure,
     data: { [key: string]: string },
-    config: { dataVaultUrl?: string }
-  ) => {
+    config: {
+      dataVaultUrl?: string
+      ocaRepoHostUrl?: string
+      additionalOverlays?: Overlay[]
+    }
+  ) => Promise<{
     node: string
     config: { width: string; height: string }
     pageNumber: number
-  }
+  }>
 ```
 
 ## Snippets
 
 ### Rendering Form HTML
+
 [./src/form.js](./src/form.js)
 
-```
+```js
 import { resolveFromZip, OcaJs } from 'oca.js-form-core'
 import { renderOCAForm } from 'oca.js-form-html'
 
@@ -73,15 +97,16 @@ fileChooser.onchange = async e => {
   const file = e.target.files[0]
   const oca = await resolveFromZip(file)
   const structure = await ocaJs.createStructure(oca)
-  const form = renderOCAForm(structure)
+  const form = renderOCAForm(structure, {}, {})
   console.log(form)
 }
 ```
 
 ### Rendering Credential HTML
+
 [./src/credential.js](./src/credential.js)
 
-```
+```js
 import { resolveFromZip, OcaJs } from 'oca.js-form-core'
 import { renderOCACredential } from 'oca.js-form-html'
 
@@ -96,3 +121,4 @@ fileChooser.onchange = async e => {
   console.log(credential)
 }
 ```
+
