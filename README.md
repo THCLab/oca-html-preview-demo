@@ -28,8 +28,8 @@ OCA.zip
 
 ## Samples
 
-- [Swiss Passport](https://data-vault.argo.colossi.network/api/v1/files/zQmPVBVWerVSHqE9jYLvGviaKoueKgb84DfwSYz2wjXwKjG)
-- [Passport with generated layouts](https://repository.oca.argo.colossi.network/api/v0.1/namespaces/demo/schemas/EJrm3ghJDlulHeuM-90aapintywaAAtAPwcaySN6lDFA/archive)
+- [Swiss Passport](https://repository.oca.argo.colossi.network/api/v0.1/schemas/EhazunOoGkNev9uFphZK_nI1o80MkioiLRrf_FlPMUsM/archive)
+- [Passport with generated layouts](https://repository.oca.argo.colossi.network/api/v0.1/schemas/EoD3kLMX7PoXkAbF3rOan0FOB8lRAa20V6ohlH9_lFF0/archive)
   - [UnitOverlay - Imperial Units metric system](https://repository.oca.argo.colossi.network/api/v0.1/namespaces/demo/schemas/EO2b-kWBd5q4B-mVj2rGIng6-9xNUoszO_FZN_njcU18/archive)
 
 ## Libs
