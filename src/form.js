@@ -28,7 +28,7 @@ fileChooser.onchange = async e => {
   }
   const data = {}
   const form = await renderOCAForm(structure, data, {
-    showPii: true,
+    showFlagged: true,
     defaultLanguage: 'en',
     onSubmitHandler,
     ocaRepoHostUrl: 'https://repository.oca.argo.colossi.network',

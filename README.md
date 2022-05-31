@@ -55,7 +55,7 @@ renderOCAForm: (
     structure: Structure
     data: { [key: string]: string },
     config: {
-      showPii?: boolean
+      showFlagged?: boolean
       defaultLanguage?: string
       onSubmitHandler?: (capturedData: { [key: string]: string }) => void
       ocaRepoHostUrl?: string
