@@ -32,9 +32,9 @@ where `meta.json` is human readable file indexing type of file's conent to it's 
 
 ## Samples
 
-- [Swiss Passport](https://repository.oca.argo.colossi.network/api/v0.1/schemas/EhazunOoGkNev9uFphZK_nI1o80MkioiLRrf_FlPMUsM/archive)
-- [Passport with generated layouts](https://repository.oca.argo.colossi.network/api/v0.1/schemas/EoD3kLMX7PoXkAbF3rOan0FOB8lRAa20V6ohlH9_lFF0/archive)
-  - [UnitOverlay - Imperial Units metric system](https://repository.oca.argo.colossi.network/api/v0.1/namespaces/demo/schemas/EO2b-kWBd5q4B-mVj2rGIng6-9xNUoszO_FZN_njcU18/archive)
+- [Swiss Passport](https://repository.oca.argo.colossi.network/api/v0.1/schemas/E2oRZ5zEKxTfTdECW-v2Q7bM_H0OD0ko7IcCwdo_u9co/archive)
+- [Passport with generated layouts](https://repository.oca.argo.colossi.network/api/v0.1/schemas/E-dPLS2l3i2MBnmGHMW4oBJTd_D1_tR5prT5jPj1jgAQ/archive)
+  - [UnitOverlay - Imperial Units metric system](https://repository.oca.argo.colossi.network/api/v0.1/schemas/EKotApLbKlwUljp6HpdkWG__vMlT4SWO2dg0TKLAKmUg/archive)
 
 ## Libs
 
