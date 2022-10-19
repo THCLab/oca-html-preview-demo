@@ -41,13 +41,13 @@ renderButton.onclick = async _ => {
 
     let capturedData = {}
     if (typeof acdc.a === 'string') {
-      capturedData = await (await fetch(`${dataVaults[0]}/${acdc.a}`)).json()
+      capturedData = await (await fetch(`${dataVaults[0]}/api/v1/files/${acdc.a}`)).json()
     } else {
       capturedData = acdc.a
     }
 
     const structure = await ocaJs.createStructure(oca)
-    const credential = renderOCACredential(structure, capturedData, {
+    const credential = await renderOCACredential(structure, capturedData, {
       dataVaultUrl: dataVaults[0]
     })
     app.innerHTML = credential.node
