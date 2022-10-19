@@ -2,7 +2,7 @@ import { resolveFromZip, OcaJs } from 'oca.js-form-core'
 import { renderOCAForm } from 'oca.js-form-html'
 
 const ocaJs = new OcaJs({
-  dataVaults: ['https://data-vault.argo.colossi.network/api/v2/files'],
+  dataVaults: ['https://data-vault.argo.colossi.network'],
   ocaRepositories: ['https://repository.oca.argo.colossi.network/api/v0.1/schemas']
 })
 const app = document.querySelector('#app')

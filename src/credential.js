@@ -4,7 +4,7 @@ import { photoBase64 } from './assets/photoBase64'
 import { signatureBase64 } from './assets/signatureBase64'
 
 const ocaJs = new OcaJs({
-  dataVaults: ['https://data-vault.argo.colossi.network/api/v2/files'],
+  dataVaults: ['https://data-vault.argo.colossi.network'],
   ocaRepositories: ['https://repository.oca.argo.colossi.network/api/v0.1/schemas']
 })
 const app = document.querySelector('#app')
@@ -28,7 +28,7 @@ fileChooser.onchange = async e => {
   const captureBaseSAI = structure.captureBaseSAI
   const credential = await renderOCACredential(structure, dataRepo[captureBaseSAI], {
     defaultLanguage: 'en',
-    dataVaultUrl: 'https://data-vault.argo.colossi.network/api/v1/files',
+    dataVaultUrl: 'https://data-vault.argo.colossi.network',
     ocaRepoHostUrl: 'https://repository.oca.argo.colossi.network',
     additionalOverlays
   })
@@ -98,7 +98,7 @@ const dataRepo = {
     sex: "unknown",
     signatureImage: ""
   },
-  EPMaG1h2hVxKCZ5_3KoNNwgAyd4Eq8zrxK3xgaaRsz2M: {
+  'E6dVEHR0obA673USLKJpuvv6qZ9pKnKd-iSCHrsHBue4': {
     documentType: 'PA',
     issuingState: 'CHE',
     issuingStateCode: 'che',

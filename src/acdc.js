@@ -1,7 +1,7 @@
 import { OcaJs } from 'oca.js-form-core'
 import { renderOCACredential } from 'oca.js-form-html'
 
-const dataVaults = ['https://data-vault.argo.colossi.network/api/v2/files']
+const dataVaults = ['https://data-vault.argo.colossi.network']
 
 const ocaJs = new OcaJs({ dataVaults })
 const app = document.querySelector('#app')
@@ -37,7 +37,7 @@ renderButton.onclick = async _ => {
   } else {
     const acdc = await attestationResponse.json()
 
-    const oca = await (await fetch(`https://repository.oca.argo.colossi.network/api/v0.1/namespaces/acdc/schemas/${acdc.s}`)).json()
+    const oca = await (await fetch(`https://repository.oca.argo.colossi.network/api/v0.1/schemas/${acdc.s}`)).json()
 
     let capturedData = {}
     if (typeof acdc.a === 'string') {
