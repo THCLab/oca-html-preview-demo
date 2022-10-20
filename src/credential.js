@@ -39,7 +39,6 @@ loadBtn.onclick = async () => {
     const structure = await ocaJs.createStructure(oca)
     const recordResponse = await fetch(`${inputValues.dataStoreHost}/api/v1/files/${inputValues.recordSAID}`)
     const record = await recordResponse.json()
-    console.log(record)
     const credential = await renderOCACredential(structure, record, {
       defaultLanguage: 'en',
       dataVaultUrl: 'https://data-vault.argo.colossi.network',

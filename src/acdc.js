@@ -1,9 +1,7 @@
 import { OcaJs } from 'oca.js-form-core'
 import { renderOCACredential } from 'oca.js-form-html'
 
-const dataVaults = ['https://data-vault.argo.colossi.network']
-
-const ocaJs = new OcaJs({ dataVaults })
+const ocaJs = new OcaJs({ dataVaults: ['https://data-vault.argo.colossi.network'] })
 const app = document.querySelector('#app')
 const verifiedSign = document.querySelector('#verified-sign')
 const notVerifiedSign = document.querySelector('#not-verified-sign')
@@ -15,50 +13,30 @@ renderButton.onclick = async _ => {
   verifiedSign.style.display = 'none'
   notVerifiedSign.style.display = 'none'
   const acdcInput = document.querySelector('#acdc-input').value
+  const dataStoreHostInput = document.querySelector('#data-store-host-input').value
+  const dataStoreUrl = new URL(dataStoreHostInput)
 
-  const tdaUrlInput = document.querySelector('#tda-url-input').value
-  const tdaUrl = new URL(tdaUrlInput)
-  let attestationResponse
-  try {
-    attestationResponse = await fetch(`${tdaUrl.origin}/attestations`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: acdcInput
-    })
-  } catch (_err) {
-    app.innerHTML = `Error: Faild to fetch ${tdaUrl.origin}/attestations`
-    app.style.color = 'red'
-  }
-  if (attestationResponse.status === 500) {
-    app.innerHTML = 'Error: ' + await attestationResponse.text()
-    app.style.color = 'red'
-    verifiedSign.style.display = 'none'
-    notVerifiedSign.style.display = 'none'
+  const attestationSplited = acdcInput.split('}-')
+  const acdc = JSON.parse(attestationSplited[0] + '}')
+  console.log(acdc)
+
+  const oca = await (await fetch(`https://repository.oca.argo.colossi.network/api/v0.1/schemas/${acdc.s}`)).json()
+
+  let capturedData = {}
+  if (typeof acdc.a === 'string') {
+    capturedData = await (await fetch(`${dataStoreUrl}api/v1/files/${acdc.a}`)).json()
   } else {
-    const acdc = await attestationResponse.json()
-
-    const oca = await (await fetch(`https://repository.oca.argo.colossi.network/api/v0.1/schemas/${acdc.s}`)).json()
-
-    let capturedData = {}
-    if (typeof acdc.a === 'string') {
-      capturedData = await (await fetch(`${dataVaults[0]}/api/v1/files/${acdc.a}`)).json()
-    } else {
-      capturedData = acdc.a
-    }
-
-    const structure = await ocaJs.createStructure(oca)
-    const credential = await renderOCACredential(structure, capturedData, {
-      dataVaultUrl: dataVaults[0]
-    })
-    app.innerHTML = credential.node
-    app.style.width = credential.config.width
-    app.style.height = parseInt(credential.config.height, 10) / credential.pageNumber + 38
-
-    if (attestationResponse.status === 200) {
-      verifiedSign.style.display = 'inline-block'
-    } else {
-      app.style.position = 'absolute'
-      notVerifiedSign.style.display = 'inline-block'
-    }
+    capturedData = acdc.a
   }
+
+  const structure = await ocaJs.createStructure(oca)
+  const credential = await renderOCACredential(structure, capturedData, {
+    defaultLanguage: 'en',
+    dataVaultUrl: 'https://data-vault.argo.colossi.network'
+  })
+  app.style.position = 'absolute'
+  notVerifiedSign.style.display = 'inline-block'
+  app.innerHTML = credential.node
+  app.style.width = parseInt(credential.config.width, 10) + 38
+  app.style.height = parseInt(credential.config.height, 10) + 76
 }
