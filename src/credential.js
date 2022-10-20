@@ -1,7 +1,5 @@
 import { resolveFromZip, OcaJs } from 'oca.js-form-core'
 import { renderOCACredential } from 'oca.js-form-html'
-import { photoBase64 } from './assets/photoBase64'
-import { signatureBase64 } from './assets/signatureBase64'
 
 const ocaJs = new OcaJs({
   dataVaults: ['https://data-vault.argo.colossi.network'],
@@ -9,112 +7,52 @@ const ocaJs = new OcaJs({
 })
 const app = document.querySelector('#app')
 
-const fileChooser = document.querySelector('#file-input')
-fileChooser.onchange = async e => {
-  let ocaBundleFile = e.target.files[0]
-  const files = []
-  for (let i = 0; i < e.target.files.length; i++) {
-    const file = e.target.files[i]
-    if (file.type === 'application/zip') {
-      ocaBundleFile = file
-    } else {
-      files.push(file)
-    }
+const inputs = {
+  ocaBundle: document.querySelector('#oca-bundle-file-input'),
+  recordSAID: document.querySelector('#record-said-input'),
+  dataStoreHost: document.querySelector('#data-store-host-input')
+}
+const loadBtn = document.querySelector('#load-btn')
+
+loadBtn.onclick = async () => {
+  const inputValues = {
+    ocaBundle: inputs.ocaBundle.files[0],
+    recordSAID: inputs.recordSAID.value,
+    dataStoreHost: inputs.dataStoreHost.value
   }
-  const additionalOverlays = (await Promise.all(files.map(f => readFile(f)))).map(o => JSON.parse(o))
 
-  const oca = await resolveFromZip(ocaBundleFile)
-  const structure = await ocaJs.createStructure(oca)
-  const captureBaseSAI = structure.captureBaseSAI
-  const credential = await renderOCACredential(structure, dataRepo[captureBaseSAI], {
-    defaultLanguage: 'en',
-    dataVaultUrl: 'https://data-vault.argo.colossi.network',
-    ocaRepoHostUrl: 'https://repository.oca.argo.colossi.network',
-    additionalOverlays
-  })
-  app.innerHTML = credential.node
-  app.style.width = `min(${credential.config.width}, 100%)`
-  app.style['min-width'] = credential.config.width / 2
-  app.style.height = credential.config.height
-}
+  const errors = []
+  app.innerHTML = ''
 
-const readFile = (file) => {
-  return new Promise((resolve, reject) => {
-    var fr = new FileReader()
-    fr.onload = () => {
-      resolve(fr.result)
-    }
-    fr.onerror = reject
-    fr.readAsText(file)
-  })
-}
+  if (!inputValues.ocaBundle) {
+    errors.push("Missing OCA Bundle file")
+  }
+  if (!inputValues.recordSAID) {
+    errors.push("Missing record SAID")
+  }
+  if (!inputValues.dataStoreHost) {
+    errors.push("Missing data store host")
+  }
 
-const dataRepo = {
-  EYz7AI0ePCPnpmTpM0CApKoMzBA5bkwek1vsRBEQuMdQ: {
-    drivingLicenseID: 'I12345678',
-    expirationDate: '08/31/2019',
-    lastName: 'Card',
-    firstName: 'Holder',
-    buildingNumber: '3570',
-    street: '21th Street',
-    city: 'Sacramento',
-    state: 'CA',
-    zipCode: '95818',
-    dateOfBirth: '08/29/1977',
-    restrictions: 'None',
-    class: 'C',
-    endorsements: 'None',
-    sex: 'M',
-    hairColor: 'brn',
-    eyesColor: 'blu',
-    height: '5\'-55"',
-    weight: '125',
-    documentDiscriminator: '09/30/201060221/21FD/18',
-    issueDate: '09/06/2010'
-  },
-  'ERY1EB9L3dDyLW-b0cwmQrkS-hBebmjKu2ylU75iYq8c': {
-    dateOfBirth: "",
-    dateOfExpiry: "",
-    dateOfIssue: [
-        "2022-04-30",
-        "2022-05-30"
-    ],
-    documentNumber: "",
-    documentType: "",
-    fullName: "",
-    issuedBy: "",
-    issuingState: "AZE",
-    height: '180',
-    issuingStateCode: [],
-    nationality: "",
-    optionalData: "",
-    optionalDocumentData: "",
-    optionalPersonalData: "180",
-    personalNumber: "",
-    photoImage: "",
-    placeOfBirth: "",
-    primaryIdentifier: "",
-    secondaryIdentifier: "",
-    sex: "unknown",
-    signatureImage: ""
-  },
-  'E6dVEHR0obA673USLKJpuvv6qZ9pKnKd-iSCHrsHBue4': {
-    documentType: 'PA',
-    issuingState: 'CHE',
-    issuingStateCode: 'che',
-    documentNumber: 'c0000000',
-    primaryIdentifier: 'John',
-    secondaryIdentifier: 'Citizen',
-    nationality: 'CHE',
-    dateOfBirth: '28.01.0000',
-    personalNumber: '',
-    sex: 'M',
-    placeOfBirth: 'Luzern LU',
-    optionalPersonalData: '170',
-    dateOfIssue: '11.07.0000',
-    issuedBy: 'Luzern LU',
-    dateOfExpiry: '11.07.0000',
-    photoImage: photoBase64,
-    signatureImage: signatureBase64
+  if (errors.length == 0) {
+    const oca = await resolveFromZip(inputValues.ocaBundle)
+    const structure = await ocaJs.createStructure(oca)
+    const recordResponse = await fetch(`${inputValues.dataStoreHost}/api/v1/files/${inputValues.recordSAID}`)
+    const record = await recordResponse.json()
+    console.log(record)
+    const credential = await renderOCACredential(structure, record, {
+      defaultLanguage: 'en',
+      dataVaultUrl: 'https://data-vault.argo.colossi.network',
+      ocaRepoHostUrl: 'https://repository.oca.argo.colossi.network'
+    })
+    app.innerHTML = credential.node
+    app.style.width = `min(${credential.config.width}, 100%)`
+    app.style['min-width'] = credential.config.width / 2
+    app.style.height = credential.config.height
+  } else {
+    app.style.color = 'red'
+    errors.forEach(e => {
+      app.innerHTML += e + '<br>'
+    })
   }
 }
