@@ -24,7 +24,7 @@ issueButton.onclick = async _ => {
   const acdc = JSON.parse(issueACDCInput)
   const signedACDC = sign(new TextEncoder().encode(JSON.stringify(acdc)), keyPair.secretKey)
   const signedACDCb64 = encodeBase64(signedACDC)
-  document.getElementById('render_acdc-input').value = `${issueACDCInput}-AABAAB${signedACDCb64}`
+  document.getElementById('render_acdc-input').value = `${issueACDCInput}-AABAA${signedACDCb64}`
 }
 
 renderButton.onclick = async _ => {
@@ -35,7 +35,7 @@ renderButton.onclick = async _ => {
   const dataStoreHostInput = document.querySelector('#render_data-store-host-input').value
   const dataStoreUrl = new URL(dataStoreHostInput)
 
-  const attestationSplited = renderACDCInput.split('}-AABAAB')
+  const attestationSplited = renderACDCInput.split('}-AABAA')
   const acdc = JSON.parse(attestationSplited[0] + '}')
   const signatureB64 = attestationSplited[1]
   const signature = decodeBase64(signatureB64)
