@@ -1,24 +1,58 @@
 import { OcaJs } from 'oca.js-form-core'
 import { renderOCACredential } from 'oca.js-form-html'
 
+import uuid4 from 'uuid4'
+import { sign } from 'tweetnacl'
+import { encodeBase64, decodeBase64 } from 'tweetnacl-util'
+
 const ocaJs = new OcaJs({ dataVaults: ['https://data-vault.argo.colossi.network'] })
 const app = document.querySelector('#app')
 const verifiedSign = document.querySelector('#verified-sign')
 const notVerifiedSign = document.querySelector('#not-verified-sign')
 
+const issueButton = document.querySelector('#issue-button')
 const renderButton = document.querySelector('#render-button')
+
+const seed = new TextEncoder().encode(uuid4().replaceAll('-', ''))
+const seedB64 = btoa(seed)
+document.getElementById('issue_seed-input').value = seedB64
+document.getElementById('render_seed-input').value = seedB64
+const keyPair = sign.keyPair.fromSeed(seed)
+
+issueButton.onclick = async _ => {
+  const issueACDCInput = document.getElementById('issue_acdc-input').value
+  const acdc = JSON.parse(issueACDCInput)
+  const signedACDC = sign(new TextEncoder().encode(JSON.stringify(acdc)), keyPair.secretKey)
+  const signedACDCb64 = encodeBase64(signedACDC)
+  document.getElementById('render_acdc-input').value = `${issueACDCInput}-AABAAB${signedACDCb64}`
+}
 
 renderButton.onclick = async _ => {
   app.style.position = 'static'
   verifiedSign.style.display = 'none'
   notVerifiedSign.style.display = 'none'
-  const acdcInput = document.querySelector('#acdc-input').value
-  const dataStoreHostInput = document.querySelector('#data-store-host-input').value
+  const renderACDCInput = document.querySelector('#render_acdc-input').value
+  const dataStoreHostInput = document.querySelector('#render_data-store-host-input').value
   const dataStoreUrl = new URL(dataStoreHostInput)
 
-  const attestationSplited = acdcInput.split('}-')
+  const attestationSplited = renderACDCInput.split('}-AABAAB')
   const acdc = JSON.parse(attestationSplited[0] + '}')
-  console.log(acdc)
+  const signatureB64 = attestationSplited[1]
+  const signature = decodeBase64(signatureB64)
+
+  const message = sign.open(signature, keyPair.publicKey)
+  if (message) {
+    const decodedMsg = new TextDecoder().decode(message)
+    if (JSON.stringify(acdc) == decodedMsg) {
+      verifiedSign.style.display = 'inline-block'
+    } else {
+      app.style.position = 'absolute'
+      notVerifiedSign.style.display = 'inline-block'
+    }
+  } else {
+    app.style.position = 'absolute'
+    notVerifiedSign.style.display = 'inline-block'
+  }
 
   const oca = await (await fetch(`https://repository.oca.argo.colossi.network/api/v0.1/schemas/${acdc.s}`)).json()
 
@@ -34,8 +68,6 @@ renderButton.onclick = async _ => {
     defaultLanguage: 'en',
     dataVaultUrl: 'https://data-vault.argo.colossi.network'
   })
-  app.style.position = 'absolute'
-  notVerifiedSign.style.display = 'inline-block'
   app.innerHTML = credential.node
   app.style.width = parseInt(credential.config.width, 10) + 38
   app.style.height = parseInt(credential.config.height, 10) + 76

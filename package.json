@@ -1,6 +1,6 @@
 {
   "name": "oca_js-form-html-demo",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
@@ -9,7 +9,10 @@
   },
   "dependencies": {
     "oca.js-form-core": "^0.1.1",
-    "oca.js-form-html": "^0.1.2"
+    "oca.js-form-html": "^0.1.2",
+    "tweetnacl": "^1.0.3",
+    "tweetnacl-util": "^0.15.1",
+    "uuid4": "^2.0.3"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^10.2.0",

@@ -42,27 +42,14 @@
       #render-button {
         margin-bottom: 10px;
       }
-      #data-store-host-input {
+      #issue_seed-input {
         width: 100%;
       }
-
-      @media (min-width: 768px) {
-        .item1 {
-          grid-column: 1;
-          grid-row: 1;
-        }
-        .item2 {
-          grid-column: 2;
-          grid-row: 1;
-        }
-        .item3 {
-          grid-column: 1 / span 2;
-          grid-row: 2;
-        }
-
-        #tda-url-input {
-          width: 50%;
-        }
+      #render_seed-input {
+        width: 100%;
+      }
+      #render_data-store-host-input {
+        width: 100%;
       }
     </style>
   </head>
@@ -70,8 +57,9 @@
     <h1>For demo purpose only</h1>
     <div class="container">
       <div class="item1">
-        <label for="acdc-input">Attestation:</label><br>
-        <textarea id="acdc-input" name="acdc-input" rows="10">
+        <h2>Issue</h2>
+        <label for="issue_acdc">Attestation:</label><br>
+        <textarea id="issue_acdc-input" name="issue_acdc" rows="10">
 {
     "v":"ACDC10JSON00011c_",
     "i":"DdUXsE9lsnc5vbSOQVG8khiqe-ICXd6F-Gf5nkfWRxFs",
@@ -80,17 +68,26 @@
     "p":[],
     "r":[],
     "d":"EQD7oAeqJOWoWYzrI1cu_Bzipr3RcpBsGkThK_L1eUEA"
-}-0K-AABAAbn6wxKnkerdoly2yqK6GFQ0UeYMxC-uuLAvs2_TjRZe69f3aW15zY_7AxutVwUuess5WQmwrBrS7DIRGb0JKCA
-        </textarea>
+}</textarea>
+        <br>
+        <label for="issue_seed">Private key seed (ED25519) used for signing:</label><br>
+        <input name="issue_seed" id="issue_seed-input" disabled /><br>
+        <button id="issue-button">Issue credential</button>
       </div>
 
       <div class="item2">
-        <label for="data-store-host">Data store host:</label><br>
-        <input id="data-store-host-input" name="data-store-host" value="https://data-vault.argo.colossi.network" />
+        <h2>Render</h2>
+        <label for="render_acdc">Attestation:</label><br>
+        <textarea id="render_acdc-input" name="render_acdc-input" rows="10"></textarea>
+        <label for="render_data-store-host">Data store host:</label><br>
+        <input id="render_data-store-host-input" name="render_data-store-host" value="https://data-vault.argo.colossi.network" />
+        <br>
+        <label for="render_seed">Private key seed (ED25519) used for signing:</label><br>
+        <input name="render_seed" id="render_seed-input" disabled /><br>
+        <button id="render-button">Render credential</button>
       </div>
 
       <div class="item3">
-        <button id="render-button">Render credential</button><br>
         <div id="app"></div>
         <img src="public/not-verified.png" class="sign" id="not-verified-sign" />
         <img src="public/verified.png" class="sign" id="verified-sign" />
