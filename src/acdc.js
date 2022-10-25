@@ -13,11 +13,11 @@ const notVerifiedSign = document.querySelector('#not-verified-sign')
 const issueButton = document.querySelector('#issue-button')
 const renderButton = document.querySelector('#render-button')
 
-const seed = new TextEncoder().encode(uuid4().replaceAll('-', ''))
+const seed = uuid4().replaceAll(/-/gi, '')
 const seedB64 = btoa(seed)
+const keyPair = sign.keyPair.fromSeed(new TextEncoder().encode(seed))
 document.getElementById('issue_seed-input').value = seedB64
 document.getElementById('render_seed-input').value = seedB64
-const keyPair = sign.keyPair.fromSeed(seed)
 
 issueButton.onclick = async _ => {
   const issueACDCInput = document.getElementById('issue_acdc-input').value
