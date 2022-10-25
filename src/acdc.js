@@ -20,19 +20,19 @@ document.getElementById('issue_seed-input').value = seedB64
 document.getElementById('render_seed-input').value = seedB64
 
 issueButton.onclick = async _ => {
-  const issueACDCInput = document.getElementById('issue_acdc-input').value
+  const issueACDCInput = document.getElementById('issue_acdc-input').value.trim()
   const acdc = JSON.parse(issueACDCInput)
-  const signedACDC = sign(new TextEncoder().encode(JSON.stringify(acdc)), keyPair.secretKey)
+  const signedACDC = sign.detached(new TextEncoder().encode(JSON.stringify(acdc)), keyPair.secretKey)
   const signedACDCb64 = encodeBase64(signedACDC)
-  document.getElementById('render_acdc-input').value = `${issueACDCInput}-AABAA${signedACDCb64}`
+  document.getElementById('render_acdc-input').value = `${JSON.stringify(acdc)}-AABAA${signedACDCb64}`
 }
 
 renderButton.onclick = async _ => {
   app.style.position = 'static'
   verifiedSign.style.display = 'none'
   notVerifiedSign.style.display = 'none'
-  const renderACDCInput = document.querySelector('#render_acdc-input').value
-  const dataStoreHostInput = document.querySelector('#render_data-store-host-input').value
+  const renderACDCInput = document.querySelector('#render_acdc-input').value.trim()
+  const dataStoreHostInput = document.querySelector('#render_data-store-host-input').value.trim()
   const dataStoreUrl = new URL(dataStoreHostInput)
 
   const attestationSplited = renderACDCInput.split('}-AABAA')
@@ -40,15 +40,13 @@ renderButton.onclick = async _ => {
   const signatureB64 = attestationSplited[1]
   const signature = decodeBase64(signatureB64)
 
-  const message = sign.open(signature, keyPair.publicKey)
-  if (message) {
-    const decodedMsg = new TextDecoder().decode(message)
-    if (JSON.stringify(acdc) == decodedMsg) {
-      verifiedSign.style.display = 'inline-block'
-    } else {
-      app.style.position = 'absolute'
-      notVerifiedSign.style.display = 'inline-block'
-    }
+  const verified = sign.detached.verify(
+    new TextEncoder().encode(attestationSplited[0] + '}'),
+    signature,
+    keyPair.publicKey
+  )
+  if (verified) {
+    verifiedSign.style.display = 'inline-block'
   } else {
     app.style.position = 'absolute'
     notVerifiedSign.style.display = 'inline-block'
