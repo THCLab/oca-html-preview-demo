@@ -3,7 +3,7 @@ import { renderOCACredential } from 'oca.js-form-html'
 
 const ocaJs = new OcaJs({
   dataVaults: ['https://data-vault.argo.colossi.network'],
-  ocaRepositories: ['https://repository.oca.argo.colossi.network/api/v0.1/schemas']
+  ocaRepositories: ['https://repository-old.oca.argo.colossi.network/api/v0.1/schemas']
 })
 const app = document.querySelector('#app')
 
@@ -42,7 +42,7 @@ loadBtn.onclick = async () => {
     const credential = await renderOCACredential(structure, record, {
       defaultLanguage: 'en',
       dataVaultUrl: 'https://data-vault.argo.colossi.network',
-      ocaRepoHostUrl: 'https://repository.oca.argo.colossi.network'
+      ocaRepoHostUrl: 'https://repository-old.oca.argo.colossi.network'
     })
     app.innerHTML = credential.node
     app.style.width = `min(${credential.config.width}, 100%)`

@@ -52,7 +52,7 @@ renderButton.onclick = async _ => {
     notVerifiedSign.style.display = 'inline-block'
   }
 
-  const oca = await (await fetch(`https://repository.oca.argo.colossi.network/api/v0.1/schemas/${acdc.s}`)).json()
+  const oca = await (await fetch(`https://repository-old.oca.argo.colossi.network/api/v0.1/schemas/${acdc.s}`)).json()
 
   let capturedData = {}
   if (typeof acdc.a === 'string') {
